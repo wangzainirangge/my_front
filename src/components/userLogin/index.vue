@@ -58,7 +58,6 @@
     },
     data () {
       return {
-        saveIP: [],
         userData: {},
         registeredData:{
           username: '',
@@ -74,17 +73,23 @@
     },
     methods: {
       clickSubmitBtn(){
-        this.registeredData.registeredIP = this.saveIP[0];
         if(this.identifyCode===this.form.code){
           this.$post(this.$api.module.operationUser + "/login",this.registeredData).then(res => {
             if (res.status == 200){
               this.userData = res.data;
-              //this.setCookie('manageID',this.resultData.manageID,1);
-              this.refreshCode();
+              this.setCookie('userID',this.userData.userID,1);
+              this.clearDate();
               this.$message({
                 message: '登陆成功！',
                 type: 'success'
               });
+              let newsRouter = this.getCookie('newsRouter');
+              if (newsRouter==='') {
+                this.$router.push({name: 'home'})
+              }else {
+                this.setCookie('newsRouter','',1);
+                this.$router.push({path: newsRouter})
+              }
             } else {
               this.$message({
                 message: '登陆失败,请检查账号或密码是否正确！',
@@ -95,7 +100,7 @@
         }else {
           this.$message.error('验证码输入错误，请重新输入！');
           this.form.code = '';
-          this.refreshCode();
+          this.clearDate();
         }
       },
       clickRegisteredBtn(){
@@ -106,6 +111,10 @@
       },
 
       refreshCode() {
+        this.identifyCode = "";
+        this.makeCode(this.identifyCodes, 4);
+      },
+      clearDate() {
         this.identifyCode = "";
         this.makeCode(this.identifyCodes, 4);
         this.registeredData = {
@@ -153,11 +162,12 @@
     },
     mounted () {
       this.refreshCode();
-      this.getUserIP((ip) => {
-        this.ip = ip;
-        console.log(ip);
-        this.saveIP.push(ip)
-      });
+      //获取本地IP地址
+      //js 引入 <!-- 获取本机ip  -->
+      //<script src="http://pv.sohu.com/cityjson?ie=utf-8">
+      var cip = returnCitySN["cip"];
+      //给vuedata对象里的字段赋值
+      this.registeredData.registeredIP = cip
     }
   }
 </script>

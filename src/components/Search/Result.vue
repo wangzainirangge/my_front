@@ -50,14 +50,109 @@
             您当前的筛选条件为<span>{{range==='0'?'全部时间':range==='1'?'一天内':range==='2'?'一周内':range==='3'?'一月内':'一年内'}}</span>
             <a @click.prevent="search(keyword,'0')">取消筛选</a>
           </div>
-          <div class="result_box" v-for="item in pageArr" :key="item.id">
-            <router-link :to="item.url">
-              <p class="title" v-html="item.title">{{item.title}}</p>
-            </router-link>
-            <p class="desc" v-html="item.urls">{{item.urls}}</p>
-            <div class="info">
-              <router-link :to="'/'+item.type"><span>{{item.type==='news'?'最新动态':item.type==='education'?'国际教育':'跨境研发'}}</span></router-link>
-              <span>{{item.publicTime|dateFormat('yyyy-MM-dd')}}</span>
+          <div class="result_box" v-for="item in pageArr" :key="item.newsID">
+            <div v-if="item.type==1">
+              <router-link :to="'/InternationalNews/newsInfo/'+item.newsID">
+                <p class="title" v-html="item.title">{{item.title}}</p>
+              </router-link>
+              <router-link :to="'/InternationalNews/newsInfo/'+item.newsID">
+                <p class="desc" v-html="item.textContent">{{item.textContent}}</p>
+              </router-link>
+              <div class="info">
+                <router-link to="/InternationalNews" v-if="item.type==1"><span style="color: #013e75">国际新闻</span></router-link>
+                <span>{{item.publicTime|dateFormat('yyyy-MM-dd')}}</span>
+              </div>
+            </div>
+
+            <div v-if="item.type==2">
+              <router-link :to="'/nationalNews/newsInfo/'+item.newsID">
+                <p class="title" v-html="item.title">{{item.title}}</p>
+              </router-link>
+              <router-link :to="'/nationalNews/newsInfo/'+item.newsID">
+                <p class="desc" v-html="item.textContent">{{item.textContent}}</p>
+              </router-link>
+              <div class="info">
+                <router-link to="/nationalNews" v-if="item.type==2"><span style="color: #013e75">国内新闻</span></router-link>
+                <span>{{item.publicTime|dateFormat('yyyy-MM-dd')}}</span>
+              </div>
+            </div>
+
+            <div v-if="item.type==3">
+              <router-link :to="'/militaryNews/newsInfo/'+item.newsID">
+                <p class="title" v-html="item.title">{{item.title}}</p>
+              </router-link>
+              <router-link :to="'/militaryNews/newsInfo/'+item.newsID">
+                <p class="desc" v-html="item.textContent">{{item.textContent}}</p>
+              </router-link>
+              <div class="info">
+                <router-link to="/militaryNews" v-if="item.type==3"><span style="color: #013e75">军事新闻</span></router-link>
+                <span>{{item.publicTime|dateFormat('yyyy-MM-dd')}}</span>
+              </div>
+            </div>
+
+            <div v-if="item.type==4">
+              <router-link :to="'/scienceNews/newsInfo/'+item.newsID">
+                <p class="title" v-html="item.title">{{item.title}}</p>
+              </router-link>
+              <router-link :to="'/scienceNews/newsInfo/'+item.newsID">
+                <p class="desc" v-html="item.textContent">{{item.textContent}}</p>
+              </router-link>
+              <div class="info">
+                <router-link to="/scienceNews" v-if="item.type==4"><span style="color: #013e75">科技新闻</span></router-link>
+                <span>{{item.publicTime|dateFormat('yyyy-MM-dd')}}</span>
+              </div>
+            </div>
+
+            <div v-if="item.type==5">
+              <router-link :to="'/financialNews/newsInfo/'+item.newsID">
+                <p class="title" v-html="item.title">{{item.title}}</p>
+              </router-link>
+              <router-link :to="'/financialNews/newsInfo/'+item.newsID">
+                <p class="desc" v-html="item.textContent">{{item.textContent}}</p>
+              </router-link>
+              <div class="info">
+                <router-link to="/financialNews" v-if="item.type==5"><span style="color: #013e75">财经新闻</span></router-link>
+                <span>{{item.publicTime|dateFormat('yyyy-MM-dd')}}</span>
+              </div>
+            </div>
+
+            <div v-if="item.type==6">
+              <router-link :to="'/educationNews/newsInfo/'+item.newsID">
+                <p class="title" v-html="item.title">{{item.title}}</p>
+              </router-link>
+              <router-link :to="'/educationNews/newsInfo/'+item.newsID">
+                <p class="desc" v-html="item.textContent">{{item.textContent}}</p>
+              </router-link>
+              <div class="info">
+                <router-link to="/educationNews" v-if="item.type==6"><span style="color: #013e75">教育新闻</span></router-link>
+                <span>{{item.publicTime|dateFormat('yyyy-MM-dd')}}</span>
+              </div>
+            </div>
+
+            <div v-if="item.type==7">
+              <router-link :to="'/sportsNews/newsInfo/'+item.newsID">
+                <p class="title" v-html="item.title">{{item.title}}</p>
+              </router-link>
+              <router-link :to="'/sportsNews/newsInfo/'+item.newsID">
+                <p class="desc" v-html="item.textContent">{{item.textContent}}</p>
+              </router-link>
+              <div class="info">
+                <router-link to="/sportsNews" v-if="item.type==7"><span style="color: #013e75">体育新闻</span></router-link>
+                <span>{{item.publicTime|dateFormat('yyyy-MM-dd')}}</span>
+              </div>
+            </div>
+
+            <div v-if="item.type==8">
+              <router-link :to="'/automotiveNews/newsInfo/'+item.newsID">
+                <p class="title" v-html="item.title">{{item.title}}</p>
+              </router-link>
+              <router-link :to="'/automotiveNews/newsInfo/'+item.newsID">
+                <p class="desc" v-html="item.textContent">{{item.textContent}}</p>
+              </router-link>
+              <div class="info">
+                <router-link to="/automotiveNews" v-if="item.type==8"><span style="color: #013e75">汽车新闻</span></router-link>
+                <span>{{item.publicTime|dateFormat('yyyy-MM-dd')}}</span>
+              </div>
             </div>
           </div>
           <v-page   :total-row="totalRow"
@@ -68,16 +163,6 @@
                     :border="false"
                     ref="page"
                     v-if="resultList[0]"></v-page>
-        </div>
-        <div class="hot">
-          <div class="list">
-            <p class="title">热门搜索 / Hot Search</p>
-            <p class="keyword">OXSIGHT仿生眼镜</p>
-            <p class="keyword">考察</p>
-            <p class="keyword">研究所</p>
-            <p class="keyword">调研</p>
-            <p class="keyword">人工智能</p>
-          </div>
         </div>
       </div>
     </div>
@@ -91,6 +176,7 @@
     name: "None",
     data(){
       return{
+
         range: '0',   //搜索用时间范围类型
         resultList:[],   //得到的搜索结果
         totalRow:0,   //分页用的结果总记录数
@@ -99,29 +185,29 @@
         keyword: ''   //搜索的关键字
       }
     },
-    async mounted(){
-      await BUS.$on('keyword', data=>this.title = data )  //接收float组件传入bus中的keyword
-      setTimeout(()=>{
-        if(this.keyword!==undefined){
-          this.search(this.keyword,0)
-        }
-      },30)
-    },
     methods:{
+
       /*根据输入框中的关键字获得搜索结果*/
       search(keyword,dateType){
         this.range = dateType
-        this.$http.get('searches/searchUrls',{params:{keyword:keyword,type:dateType}}).then(result=>{
-          result.data.map((item,index)=>{
-            item.type = item.type===1?'news':item.type===2?'development':'education'
-            item.url = '/' + item.type + '/' + item.type + 'Info/' + item.entityID
-          })
-          this.resultList = result.data
-          this.totalRow = result.data.length/this.pageSize*10
+        this.$get(this.$api.module.searches + '/searchUrls?keyword=' + this.keyword + '&type=' + dateType).then(res => {
+          if (res.status == 200){
+            this.resultList = res.data;
+            this.totalRow = res.data.length/this.pageSize*10
+            if(this.$refs.page){
+              this.$refs.page.reload()
+            }
+            this.$message({
+              message: '获取数据成功！',
+              type: 'success'
+            });
+          } else {
+            this.$message({
+              message: '获取数据失败！',
+              type: 'error'
+            });
+          }
         })
-        if(this.$refs.page){
-          this.$refs.page.reload()
-        }
       },
 
       /*分页的回调函数*/
@@ -137,8 +223,12 @@
         }
       },
     },
-    beforeDestroy() {
-      BUS.$off('keyword')
+    mounted () {
+      this.keyword = this.$route.params.searchData;
+      if (this.keyword!=''||this.keyword!=null){
+        this.search(this.keyword,5)
+      }
+      //alert(this.keyword)
     },
     components: {
       'v-page': vPage

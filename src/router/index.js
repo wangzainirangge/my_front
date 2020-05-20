@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from "../components/Home";
+import home from "../components/Home";
 import About from "../components/About/About";
 import News from "../components/News/News";
 import Direction from "../components/Development/Direction";
@@ -49,8 +49,8 @@ export default new Router({
     },
     {
       path: '/home',
-      name: 'Home',
-      component: Home
+      name: 'home',
+      component: home
     },
 
 
@@ -72,7 +72,7 @@ export default new Router({
       component: nationalNews
     },
     {
-      path: '/nationalNewsInfo/newsInfo/:id',
+      path: '/nationalNews/newsInfo/:id',
       name: 'nationalNewsInfo',
       component: nationalNewsInfo
     },
@@ -83,7 +83,7 @@ export default new Router({
       component: militaryNews
     },
     {
-      path: '/militaryNewsInfo/newsInfo/:id',
+      path: '/militaryNews/newsInfo/:id',
       name: 'militaryNewsInfo',
       component: militaryNewsInfo
     },
@@ -94,7 +94,7 @@ export default new Router({
       component: scienceNews
     },
     {
-      path: '/scienceNewsInfo/newsInfo/:id',
+      path: '/scienceNews/newsInfo/:id',
       name: 'scienceNewsInfo',
       component: scienceNewsInfo
     },
@@ -105,7 +105,7 @@ export default new Router({
       component: financialNews
     },
     {
-      path: '/financialNewsInfo/newsInfo/:id',
+      path: '/financialNews/newsInfo/:id',
       name: 'financialNewsInfo',
       component: financialNewsInfo
     },
@@ -116,7 +116,7 @@ export default new Router({
       component: educationNews
     },
     {
-      path: '/educationNewsInfo/newsInfo/:id',
+      path: '/educationNews/newsInfo/:id',
       name: 'educationNewsInfo',
       component: educationNewsInfo
     },
@@ -127,7 +127,7 @@ export default new Router({
       component: sportsNews
     },
     {
-      path: '/sportsNewsInfo/newsInfo/:id',
+      path: '/sportsNews/newsInfo/:id',
       name: 'sportsNewsInfo',
       component: sportsNewsInfo
     },
@@ -138,7 +138,7 @@ export default new Router({
       component: automotiveNews
     },
     {
-      path: '/automotiveNewsInfo/newsInfo/:id',
+      path: '/automotiveNews/newsInfo/:id',
       name: 'automotiveNewsInfo',
       component: automotiveNewsInfo
     },
@@ -244,7 +244,7 @@ export default new Router({
     },
     {
       path: '/search',
-      name: 'Result',
+      name: 'search',
       component: Result
     }
   ]

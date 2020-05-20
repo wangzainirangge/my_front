@@ -21,13 +21,36 @@ Vue.prototype.$get = get
 Vue.prototype.$patch = patch
 Vue.prototype.$put = put
 
+Vue.prototype.setCookie = function(c_name,value,expiredays) {
+  var exdate=new Date()
+  exdate.setDate(exdate.getDate()+expiredays)
+  document.cookie=c_name+ "=" +escape(value)+
+    ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+};
+Vue.prototype.getCookie=function(c_name) {
+  if (document.cookie.length>0)
+  {
+    var  c_start=document.cookie.indexOf(c_name + "=")
+    if (c_start!=-1)
+    {
+      c_start=c_start + c_name.length+1
+      var c_end=document.cookie.indexOf(";",c_start)
+      if (c_end==-1) c_end=document.cookie.length
+      return unescape(document.cookie.substring(c_start,c_end))
+    }
+  }
+  return ""
+};
+
+
 Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 axios.defaults.baseURL = "http://47.104.234.120:8080/dg_project/" //全局配置根路径
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'  //全局配置请求方式
-Vue.prototype.imgRoot = 'http://47.104.234.120:8080/assets/iiat/'
+//Vue.prototype.imgRoot = 'http://47.104.234.120:8080/assets/iiat/'
+Vue.prototype.imgRoot = 'D:/IDEA/'
 Vue.prototype.imgCutRoot = 'http://47.104.234.120:8080/assets/cutIiat/'
 
 /*定义格式化日期的全局过滤器

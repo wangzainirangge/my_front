@@ -17,42 +17,31 @@
           </div>
           <div class="search">
             <div class="search_input">
-              <input type="text" placeholder="Search Articles ..." @keyup.enter="search()" v-model="sTitle">
-              <button @click="search()"><i class="fa fa-search" aria-hidden="true"></i></button>
+              <input type="text" placeholder="Search Articles ..." v-model="keyword" @keyup.enter="passKeyword()">
+              <button @click="passKeyword()"><i class="fa fa-search" aria-hidden="true"></i></button>
             </div>
           </div>
         </div>
         <div class="news_list">
-          <p v-if="!newsFirst.title&&!newsList[0]" class="warn">没有符合的内容</p>
-          <div class="news_box news_first" v-if="newsFirst.title" v-show="flag">
+          <p v-if="newsList !== undefined && newsList ==0" class="warn">没有符合的内容</p>
+          <div class="news_box" style="height: 450px" v-for="item in newsList" :key="item.newsID">
             <div class="text">
-              <router-link :to="'/nationalNewsInfo/newsInfo/'+newsFirst.newsID">
-                <img :src="imgCutRoot + 'news/' + newsFirst.photoName" alt="">
+              <router-link :to="'/nationalNews/newsInfo/'+item.newsID">
+                <img :src="require('../../../../img/' + item.photoUrl)" alt="">
               </router-link>
-              <div class="info">
-                <div class="date">{{newsFirst.publicTime | dateFormat('yyyy-MM-dd')}}</div>
-                <router-link :to="'/nationalNewsInfo/newsInfo/'+newsFirst.newsID"><h3 class="title">{{newsFirst.title}}</h3></router-link>
-                <router-link :to="'/nationalNewsInfo/newsInfo/'+newsFirst.newsID"><p class="summary">{{newsFirst.synopsis}}</p></router-link>
-              </div>
-            </div>
-          </div>
-          <div class="news_box" v-if="newsList[0]" v-for="item in pageArr" :key="item.newsID">
-            <div class="text">
-              <router-link :to="'/nationalNewsInfo/newsInfo/'+item.newsID">
-                <img :src="imgRoot + 'news/' + item.photoName" alt="">
-              </router-link>
-              <p class="date">{{item.publicTime | dateFormat('yyyy-MM-dd')}}</p>
-              <router-link :to="'/nationalNewsInfo/newsInfo/'+item.newsID"><h3 class="title">{{item.title}}</h3></router-link>
+              <p class="date">{{item.pushTime | dateFormat('yyyy-MM-dd')}}</p>
+              <router-link :to="'/nationalNews/newsInfo/'+item.newsID"><h3 class="title">{{item.title}}</h3></router-link>
             </div>
           </div>
         </div>
-        <v-page   :total-row="totalRow"
-                  @page-change="pageChange"
-                  :page-size-menu="false"
-                  align="center"
-                  :info="false"
-                  :border="false"
-                  ref="page"></v-page>
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page.sync="pageNo"
+          :page-size="pageSize"
+          layout="total, prev, pager, next"
+          :total="total">
+        </el-pagination>
       </div>
     </div>
   </div>
@@ -64,11 +53,11 @@
     name: "News",
     data(){
       return{
-        newsFirst:{},   //获取到的第一个发布的新闻
+        ewsFirst:{},   //获取到的第一个发布的新闻
         newsList:[],   //获取到的已发布的新闻列表
-        totalRow:0,     //分页用到的总记录数
-        /*pageSize:8,*/
-        pageArr:[],    //分页后存储当页新闻记录的数组
+        pageNo: 1,
+        pageSize:9,
+        total: 0,
         flag: true,    //判断是否显示第一个速递
         sTitle: ''     //搜索用的标题关键字
       }
@@ -78,67 +67,33 @@
     },
     methods: {
       /*获取新闻列表*/
-      async getNewsList() {
-        await this.$http.get('news/tourist/cut', {params: {state: 1, width: 356, height: 490}}).then(result => {
-          this.newsFirst = result.data[0]
-          this.newsList = result.data.slice(1)
-          this.totalRow = ((result.data.length-8)/9+1)*10
-        })
-        this.$refs.page.reload()
-      },
-
-      /*分页的回调函数*/
-      pageChange(pInfo){
-        if(pInfo.pageNumber === 1){
-          this.flag = true
-          pInfo.pageSize = 7
-          this.pageArr.splice(0,this.pageArr.length)
-          let start = 0,end = 0
-          end = start + pInfo.pageSize
-          if(end>this.newsList.length) end = this.newsList.length
-          for(let i = start;i< end;i++){
-            this.pageArr.push(this.newsList[i])
-          }
-        }else if(pInfo.pageNumber === 2){
-          this.flag = false
-          pInfo.pageSize = 9
-          this.pageArr.splice(0, this.pageArr.length);
-          let start = 7, end = 0;
-          end = start + pInfo.pageSize;
-          if (end > this.newsList.length) end = this.newsList.length;
-          for (let i = start; i < end; i++) {
-            this.pageArr.push(this.newsList[i]);
-          }
-        }else{
-          this.flag = false
-          pInfo.pageSize = 9;
-          this.pageArr.splice(0, this.pageArr.length);
-          let start = 0, end = 0;
-          start = 7 + pInfo.pageSize*(pInfo.pageNumber - 2);
-          end = start + pInfo.pageSize;
-          if (end > this.newsList.length) end = this.newsList.length;
-          for (let i = start; i < end; i++) {
-            this.pageArr.push(this.newsList[i]);
-          }
-        }
-      },
-
-      /*页内搜索函数*/
-      async search(){
-        await this.$http.get('news/title',{params:{title:this.sTitle}}).then(result=>{
-          if(result.data.length!==0){
-            this.newsFirst = result.data[0]
-            this.newsList = result.data.splice(1)
-            this.totalRow = ((result.data.length-8)/9+1)*10
-            this.$refs.page.reload()
-          }else{
-            this.newsFirst = {}
-            this.newsList = []
-            this.$refs.page.reload()
+      getNewsList(){
+        this.$get(this.$api.module.operationNews + '?status=1&type=2&pageSize=' + this.pageSize + "&pageNo=" + this.pageNo).then(res => {
+          if (res.status == 200){
+            this.newsList = res.data;
+            this.total = res.page.totalNum;
+            this.$message({
+              message: '获取数据成功！',
+              type: 'success'
+            });
+          } else {
+            this.$message({
+              message: '获取数据失败！',
+              type: 'error'
+            });
           }
         })
-        this.sTitle = ''
-      }
+      },
+      handleSizeChange(val){
+        this.pageSize = val;
+        this.getNewsList();
+      },
+      handleCurrentChange(){
+        this.getNewsList();
+      },
+      passKeyword(){
+        this.$router.push({name: 'search',params:{searchData: this.keyword}})
+      },
     },
     components: {
       'v-page': vPage
@@ -147,6 +102,11 @@
 </script>
 
 <style scoped>
+
+  .el-pagination {
+    text-align: center;
+  }
+
   .news{background-color: #f5f5f5;}
   .news .width{padding: 2% 8% 5% 8%;}
 

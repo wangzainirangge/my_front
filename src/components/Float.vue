@@ -94,10 +94,7 @@
 
       /*用bus+$emit向搜索结果页面传递搜索关键词*/
       passKeyword(){
-        this.$router.push('/search')
-        setTimeout(()=>{
-          BUS.$emit('keyword',this.keyword)
-        },30)
+        this.$router.push({name: 'search',params:{searchData: this.keyword}})
       }
     }
   }

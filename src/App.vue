@@ -21,46 +21,28 @@
           <router-link to="/sportsNews"><li>体育新闻</li></router-link>
           <router-link to="/automotiveNews"><li>汽车新闻</li></router-link>
           <router-link to="/userLogin"><li>登陆/注册</li></router-link>
-          <!--<router-link to="/development"><li><span class="en" v-if="en_flag">Cross-border Research&Development</span><span v-if="!en_flag">CRD</span></li></router-link>
-          <router-link to="/education"><li>国际教育服务 / <span class="en" v-if="en_flag">International Education Service</span><span v-if="!en_flag">IES</span></li></router-link>
-          <router-link to="/join"><li>加入我们 / Join Us</li></router-link>-->
         </ul></div>
     </div>
     <router-view class="animated fadeIn change" style="margin-top: 0px"/>
-    <div class="footer">
-      <div class="connect">
-        <!--<div class="info">
-          <img src="./assets/image/common/address.png" alt="">
-          <p>帝工先进技术研究院（暨帝工（杭州）科技产业有限公司）<br>
-            Imperial Institute of Advanced Technology
-          </p>
-        </div>-->
-        <!--<div class="line"></div>-->
-        <div class="info">
+    <div class="footer" style="height: 210px;margin: 0px;padding: 0px;">
+      <div class="connect" style="height: 200px;margin: 0px;padding: 0px;margin-left: 100px;margin-top: 10px">
+        <div class="info" style="height: 40px">
           <img src="./assets/image/common/phone.png" alt="">
           <p>15153737506</p>
         </div>
         <div class="line"></div>
-        <div class="info">
+        <div class="info" style="height: 40px">
           <img src="./assets/image/common/email.png" alt="">
           <p>1144523711@qq.com</p>
         </div>
         <div class="line"></div>
-        <div class="info">
+        <div class="info" style="height: 40px">
           <img src="./assets/image/common/location.png" alt="">
           <p>商丘师范学院信息技术学院</p>
         </div>
       </div>
       <div class="relate">
-        <!--<div class="partner">
-          <p>合作伙伴</p>
-          <a href="http://aladdinid.com/" target="_blank"><img src="./assets/image/common/aladdin.jpg" alt="阿拉丁商标"></a>
-          <div class="imgs">
-            <a href="https://mindrank.ai/" target="_blank"><img src="./assets/image/common/mindrank.jpg" alt="mindrank商标"></a>
-            <a href="https://www.oxsight.co.uk/" target="_blank"><img src="./assets/image/common/oxsight.jpg" alt="oxsight商标"></a>
-          </div>
-        </div>-->
-        <div class="subscribe">
+        <div class="subscribe" style="margin-right: 80px">
           <p>扫码联系作者</p>
           <div class="QTs">
             <div class="QT">
@@ -73,11 +55,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="copy">
-        <hr>
-        <p>新媒体管理系统</p>
-        <!--<p>浙ICP备19012138号</p>-->
       </div>
     </div>
   </div>
